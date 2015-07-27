@@ -1,2 +1,2 @@
 # feedme
-A simple RSS reader written in GO
+A simple RSS reader written in Go
