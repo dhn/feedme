@@ -8,6 +8,8 @@ go:
  - tip
 
 install:
+ - go get github.com/jehiah/go-strftime
+ - go get github.com/mattn/go-getopt
  - go get code.google.com/p/go-sqlite/go1/sqlite3
  - go get github.com/SlyMarbo/rss
 
