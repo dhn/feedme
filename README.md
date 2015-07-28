@@ -5,8 +5,10 @@ A simple RSS reader written in Go
 
 ## Dependencies
 
-- github.com/axgle/mahonia
 - github.com/SlyMarbo/rs
+- github.com/axgle/mahonia
+- github.com/mattn/go-getopt
+- github.com/jehiah/go-strftime
 - code.google.com/p/go-sqlite/go1/sqlite3
 
 ## Programms
