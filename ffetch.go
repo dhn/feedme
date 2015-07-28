@@ -57,10 +57,10 @@ func main() {
 
 	for _, url := range RSS {
 		feed, err := rss.Fetch(url)
-		check_err(err)
+		checkErr(err)
 
 		err = feed.Update()
-		check_err(err)
+		checkErr(err)
 
 		for _, element := range feed.Items {
 			insertSQL(feed.Title, element.Title, element.Link,
