@@ -27,9 +27,9 @@ func initSQL() {
 
 	query := "CREATE TABLE IF NOT EXISTS feed(" +
 		"id        INTEGER PRIMARY KEY," +
-		"site      VARCHAR(50)," +
-		"title     VARCHAR(50) UNIQUE," +
-		"link      VARCHAR(100)," +
+		"site      TEXT," +
+		"title     TEXT UNIQUE," +
+		"link      TEXT," +
 		"date      INTEGER," +
 		"read      INTEGER);"
 
