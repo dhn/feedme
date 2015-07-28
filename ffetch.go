@@ -1,3 +1,4 @@
+// ffetch.go - fetch and store content to SQL
 package main
 
 import (
@@ -15,6 +16,11 @@ var RSS = map[string]string{
 	"g0tmi1k": "https://blog.g0tmi1k.com/atom.xml",
 }
 
+// Default SQL Database
+const (
+	SQLDatabase = "feedme.db"
+)
+
 var cursor *sqlite3.Conn
 
 func checkErr(err error) {
@@ -24,7 +30,7 @@ func checkErr(err error) {
 }
 
 func initSQL() {
-	cursor, _ = sqlite3.Open("feedme.db")
+	cursor, _ = sqlite3.Open(SQLDatabase)
 
 	query := "CREATE TABLE IF NOT EXISTS feed(" +
 		"id        INTEGER PRIMARY KEY," +
