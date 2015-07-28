@@ -1,4 +1,3 @@
-/* See LICENSE file for license details. */
 package main
 
 import (
@@ -8,7 +7,7 @@ import (
 )
 
 /* RSS feed's */
-var RSS map[string]string = map[string]string{
+var RSS = map[string]string {
 	"miau":    "http://www.lets-hack.it/feed/",
 	"marmaro": "http://marmaro.de/lue/feed.rss",
 	"kuchen":  "https://kuchen.io/feed",
@@ -23,7 +22,7 @@ func checkErr(err error) {
 	}
 }
 
-func init_sql() {
+func initSQL() {
 	cursor, _ = sqlite3.Open("feedme.db")
 
 	query := "CREATE TABLE IF NOT EXISTS feed(" +
@@ -37,7 +36,7 @@ func init_sql() {
 	cursor.Exec(query)
 }
 
-func insert_sql(site string, title string, link string, date time.Time, read bool) {
+func insertSQL(site string, title string, link string, date time.Time, read bool) {
 	query := "INSERT INTO feed (site, title, link, date, read) " +
 		"VALUES ($site, $title, $link, $date, $read);"
 
@@ -54,17 +53,17 @@ func insert_sql(site string, title string, link string, date time.Time, read boo
 
 func main() {
 	// initialize SQL database
-	init_sql()
+	initSQL()
 
 	for _, url := range RSS {
 		feed, err := rss.Fetch(url)
-		checkErr(err)
+		check_err(err)
 
 		err = feed.Update()
-		checkErr(err)
+		check_err(err)
 
 		for _, element := range feed.Items {
-			insert_sql(feed.Title, element.Title, element.Link,
+			insertSQL(feed.Title, element.Title, element.Link,
 				element.Date, element.Read)
 		}
 	}
