@@ -24,12 +24,6 @@ type Args struct {
 
 var cursor *sqlite3.Conn
 
-func checkErr(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 func checkFileExist(filename string) bool {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		return false
