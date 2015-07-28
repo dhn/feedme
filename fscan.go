@@ -73,7 +73,7 @@ func showSQL(limit int) {
 }
 
 func usage() {
-	fmt.Println("usage: fshow [options]")
+	fmt.Println("usage: fscan [options]")
 	fmt.Println("   -l,  Show n new RSS feeds (default 10).")
 	fmt.Println("   -h,  Show this help and exit.")
 }
