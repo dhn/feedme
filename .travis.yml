@@ -12,4 +12,5 @@ install:
  - go get github.com/SlyMarbo/rss
 
 script:
- - go build
+ - go build -v ffetch.go
+ - go build -v fscan.go
