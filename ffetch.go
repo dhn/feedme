@@ -4,7 +4,6 @@ package main
 import (
 	"code.google.com/p/go-sqlite/go1/sqlite3"
 	"github.com/SlyMarbo/rss"
-	"strings"
 	"time"
 )
 
@@ -27,19 +26,30 @@ func checkErr(err error) {
 func init_sql() {
 	cursor, _ = sqlite3.Open("feedme.db")
 
-	sql := "CREATE TABLE IF NOT EXISTS feed(" +
+	query := "CREATE TABLE IF NOT EXISTS feed(" +
 		"id        INTEGER PRIMARY KEY," +
 		"site      VARCHAR(50)," +
 		"title     VARCHAR(50) UNIQUE," +
 		"link      VARCHAR(100)," +
-		"date      INTEGER);"
+		"date      INTEGER," +
+		"read      INTEGER);"
 
-	cursor.Exec(sql)
+	cursor.Exec(query)
 }
 
-func insert_sql(site string, title string, link string, date time.Time) {
-	sql := sqlite3.NamedArgs{"$site": site, "$title": title, "$link": link, "$date": date}
-	cursor.Exec("INSERT INTO feed (site, title, link, date) VALUES($site, $title, $link, $date)", sql)
+func insert_sql(site string, title string, link string, date time.Time, read bool) {
+	query := "INSERT INTO feed (site, title, link, date, read) " +
+		"VALUES ($site, $title, $link, $date, $read);"
+
+	sql := sqlite3.NamedArgs{
+		"$site":  site,
+		"$title": title,
+		"$link":  link,
+		"$date":  date,
+		"$read":  read,
+	}
+
+	cursor.Exec(query, sql)
 }
 
 func main() {
@@ -54,8 +64,8 @@ func main() {
 		checkErr(err)
 
 		for _, element := range feed.Items {
-			title := strings.Replace(feed.Title, "'", "\\'", -1)
-			insert_sql(title, element.Title, element.Link, element.Date)
+			insert_sql(feed.Title, element.Title, element.Link,
+				element.Date, element.Read)
 		}
 	}
 }
