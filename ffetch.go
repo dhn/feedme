@@ -1,9 +1,10 @@
 package main
 
 import (
+	"time"
+
 	"code.google.com/p/go-sqlite/go1/sqlite3"
 	"github.com/SlyMarbo/rss"
-	"time"
 )
 
 /* RSS feed's */
