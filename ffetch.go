@@ -7,7 +7,7 @@ import (
 )
 
 /* RSS feed's */
-var RSS = map[string]string {
+var RSS = map[string]string{
 	"miau":    "http://www.lets-hack.it/feed/",
 	"marmaro": "http://marmaro.de/lue/feed.rss",
 	"kuchen":  "https://kuchen.io/feed",
