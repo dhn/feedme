@@ -2,6 +2,10 @@
 package main
 
 import (
+	"crypto/sha1"
+	"fmt"
+	"io"
+	"os"
 	"time"
 
 	"code.google.com/p/go-sqlite/go1/sqlite3"
@@ -19,14 +23,28 @@ var RSS = map[string]string{
 // Default SQL Database
 const (
 	SQLDatabase = "feedme.db"
+	FilePath    = "/tmp/feedme/"
 )
 
 var cursor *sqlite3.Conn
+
+func die(format string, args ...interface{}) {
+	fmt.Printf(format, args...)
+	os.Exit(1)
+}
 
 func checkErr(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func checkIfExist(filename string) bool {
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		return false
+	}
+
+	return true
 }
 
 func initSQL() {
@@ -58,6 +76,30 @@ func insertSQL(site string, title string, link string, date time.Time, read bool
 	cursor.Exec(query, sql)
 }
 
+func writeToFile(filename string, content string) {
+	if checkIfExist(FilePath) {
+		file, err := os.Create(filename)
+		checkErr(err)
+
+		n, err := io.WriteString(file, content)
+		if err != nil {
+			die("%s", n, err)
+		}
+
+		file.Close()
+	} else {
+		die("%s not found\n", FilePath)
+	}
+}
+
+func hash(str string) string {
+	hash := sha1.New()
+	hash.Write([]byte(str))
+	bs := hash.Sum(nil)
+
+	return fmt.Sprintf("%x", bs)
+}
+
 func main() {
 	// initialize SQL database
 	initSQL()
@@ -70,6 +112,7 @@ func main() {
 		checkErr(err)
 
 		for _, element := range feed.Items {
+			writeToFile(FilePath+hash(element.Title), element.Content)
 			insertSQL(feed.Title, element.Title, element.Link,
 				element.Date, element.Read)
 		}
