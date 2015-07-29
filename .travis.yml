@@ -15,3 +15,4 @@ install:
 script:
  - go build -v ffetch.go
  - go build -v fscan.go
+ - go build -v fshow.go
