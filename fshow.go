@@ -9,14 +9,9 @@ import (
 	"os/exec"
 	"strconv"
 
+	"./lib/config"
 	"code.google.com/p/go-sqlite/go1/sqlite3"
 	"github.com/mattn/go-getopt"
-)
-
-// Default SQL Database
-const (
-	SQLDatabase = "feedme.db"
-	FilePath    = "/tmp/feedme/"
 )
 
 // A Args set getopt arguments
@@ -56,10 +51,10 @@ func checkFileExist(filename string) bool {
 }
 
 func initSQL() {
-	if !checkFileExist(SQLDatabase) {
-		die("%s not found, please run first ffetch\n", SQLDatabase)
+	if !checkFileExist(config.SQLDatabase) {
+		die("%s not found, please run first ffetch\n", config.SQLDatabase)
 	} else {
-		cursor, _ = sqlite3.Open(SQLDatabase)
+		cursor, _ = sqlite3.Open(config.SQLDatabase)
 	}
 }
 
@@ -136,7 +131,7 @@ func main() {
 
 		initSQL()
 		article := getTitle(args.read)
-		file := FilePath + hash(article)
+		file := config.FilePath + hash(article)
 
 		if checkFileExist(file) {
 			openArticle(file)

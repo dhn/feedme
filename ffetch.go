@@ -8,22 +8,9 @@ import (
 	"os"
 	"time"
 
+	"./lib/config"
 	"code.google.com/p/go-sqlite/go1/sqlite3"
 	"github.com/SlyMarbo/rss"
-)
-
-/* RSS feed's */
-var RSS = map[string]string{
-	"miau":    "http://www.lets-hack.it/feed/",
-	"marmaro": "http://marmaro.de/lue/feed.rss",
-	"kuchen":  "https://kuchen.io/feed",
-	"g0tmi1k": "https://blog.g0tmi1k.com/atom.xml",
-}
-
-// Default SQL Database
-const (
-	SQLDatabase = "feedme.db"
-	FilePath    = "/tmp/feedme/"
 )
 
 var cursor *sqlite3.Conn
@@ -48,7 +35,7 @@ func checkIfExist(filename string) bool {
 }
 
 func initSQL() {
-	cursor, _ = sqlite3.Open(SQLDatabase)
+	cursor, _ = sqlite3.Open(config.SQLDatabase)
 
 	query := "CREATE TABLE IF NOT EXISTS feed(" +
 		"id        INTEGER PRIMARY KEY," +
@@ -77,7 +64,7 @@ func insertSQL(site string, title string, link string, date time.Time, read bool
 }
 
 func writeToFile(filename string, content string) {
-	if checkIfExist(FilePath) {
+	if checkIfExist(config.FilePath) {
 		file, err := os.Create(filename)
 		checkErr(err)
 
@@ -88,7 +75,7 @@ func writeToFile(filename string, content string) {
 
 		file.Close()
 	} else {
-		die("%s not found\n", FilePath)
+		die("%s not found\n", config.FilePath)
 	}
 }
 
@@ -104,7 +91,7 @@ func main() {
 	// initialize SQL database
 	initSQL()
 
-	for _, url := range RSS {
+	for _, url := range config.RSS {
 		feed, err := rss.Fetch(url)
 		checkErr(err)
 
@@ -112,7 +99,7 @@ func main() {
 		checkErr(err)
 
 		for _, element := range feed.Items {
-			writeToFile(FilePath+hash(element.Title), element.Content)
+			writeToFile(config.FilePath+hash(element.Title), element.Content)
 			insertSQL(feed.Title, element.Title, element.Link,
 				element.Date, element.Read)
 		}

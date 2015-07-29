@@ -7,14 +7,10 @@ import (
 	"strconv"
 	"time"
 
+	"./lib/config"
 	"code.google.com/p/go-sqlite/go1/sqlite3"
 	"github.com/jehiah/go-strftime"
 	"github.com/mattn/go-getopt"
-)
-
-// Default SQL Database
-const (
-	SQLDatabase = "feedme.db"
 )
 
 // A Args set getopt arguments
@@ -33,10 +29,10 @@ func checkFileExist(filename string) bool {
 }
 
 func initSQL() {
-	if !checkFileExist(SQLDatabase) {
-		fmt.Printf("%s not found, please run first ffetch\n", SQLDatabase)
+	if !checkFileExist(config.SQLDatabase) {
+		fmt.Printf("%s not found, please run first ffetch\n", config.SQLDatabase)
 	} else {
-		cursor, _ = sqlite3.Open(SQLDatabase)
+		cursor, _ = sqlite3.Open(config.SQLDatabase)
 	}
 }
 
