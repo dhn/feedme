@@ -33,3 +33,9 @@ $ fscan -l 5
   32  2015-06-08 00:00:00  http://marmaro.de/lue  2015-06-08
   33  2015-06-01 00:00:00  http://marmaro.de/lue  2015-06-01
 ```
+
+### fshow
+
+Open the RSS article in your ```$EDITOR```.
+
+- ```-r```: Show article n in your $EDITOR (default the newest).
