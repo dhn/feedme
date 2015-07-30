@@ -1,4 +1,5 @@
 // config.go - config file for RSS feeds etc.
+
 package config
 
 // Default SQL Database

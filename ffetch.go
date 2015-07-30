@@ -8,9 +8,9 @@ import (
 	"os"
 	"time"
 
-	"./lib/config"
-	"code.google.com/p/go-sqlite/go1/sqlite3"
-	"github.com/SlyMarbo/rss"
+	"github.com/dhn/feedme/lib/config"
+	"github.com/dhn/feedme/thirdparty/rss"
+	"github.com/dhn/feedme/thirdparty/sqlite3"
 )
 
 var cursor *sqlite3.Conn

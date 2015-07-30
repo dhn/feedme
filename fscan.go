@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"time"
 
-	"./lib/config"
-	"code.google.com/p/go-sqlite/go1/sqlite3"
-	"github.com/jehiah/go-strftime"
-	"github.com/mattn/go-getopt"
+	"github.com/dhn/feedme/lib/config"
+	"github.com/dhn/feedme/thirdparty/getopt"
+	"github.com/dhn/feedme/thirdparty/sqlite3"
+	"github.com/dhn/feedme/thirdparty/strftime"
 )
 
 // A Args set getopt arguments
