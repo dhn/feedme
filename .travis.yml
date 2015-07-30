@@ -7,7 +7,7 @@ go:
  - tip
 
 install:
- - go get github.com/dhn/feedme
+ - go get -d -v ./...
 
 script:
  - go build -v ffetch.go
