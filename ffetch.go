@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/dhn/feedme/lib/config"
+	"github.com/dhn/feedme/thirdparty/html2text"
 	"github.com/dhn/feedme/thirdparty/rss"
 	"github.com/dhn/feedme/thirdparty/sqlite3"
 )
@@ -63,20 +64,24 @@ func insertSQL(site string, title string, link string, date time.Time, read bool
 	cursor.Exec(query, sql)
 }
 
+func convertHtmlToText(html string) string {
+	text, err := html2text.FromString(html)
+	checkErr(err)
+
+	return text
+}
+
 func writeToFile(filename string, content string) {
-	if checkIfExist(config.FilePath) {
-		file, err := os.Create(filename)
-		checkErr(err)
+	convertedText := convertHtmlToText(content)
+	file, err := os.Create(filename)
+	checkErr(err)
 
-		n, err := io.WriteString(file, content)
-		if err != nil {
-			die("%s", n, err)
-		}
-
-		file.Close()
-	} else {
-		die("%s not found\n", config.FilePath)
+	n, err := io.WriteString(file, convertedText)
+	if err != nil {
+		die("%s", n, err)
 	}
+
+	file.Close()
 }
 
 func hash(str string) string {
@@ -88,21 +93,25 @@ func hash(str string) string {
 }
 
 func main() {
-	// initialize SQL database
-	initSQL()
+	if checkIfExist(config.FilePath) {
+		// initialize SQL database
+		initSQL()
 
-	for _, url := range config.RSS {
-		feed, err := rss.Fetch(url)
-		checkErr(err)
+		for _, url := range config.RSS {
+			feed, err := rss.Fetch(url)
+			checkErr(err)
 
-		err = feed.Update()
-		checkErr(err)
+			err = feed.Update()
+			checkErr(err)
 
-		for _, element := range feed.Items {
-			writeToFile(config.FilePath+hash(element.Title), element.Content)
-			insertSQL(feed.Title, element.Title, element.Link,
-				element.Date, element.Read)
+			for _, element := range feed.Items {
+				writeToFile(config.FilePath+hash(element.Title), element.Content)
+				insertSQL(feed.Title, element.Title, element.Link,
+					element.Date, element.Read)
+			}
 		}
+	} else {
+		die("%s not found\n", config.FilePath)
 	}
 }
 
