@@ -129,12 +129,16 @@ func main() {
 			}
 		}
 
-		initSQL()
-		article := getTitle(args.read)
-		file := config.FilePath + hash(article)
+		if checkFileExist(config.FilePath) {
+			initSQL()
+			article := getTitle(args.read)
+			file := config.FilePath + hash(article)
 
-		if checkFileExist(file) {
-			openArticle(file)
+			if checkFileExist(file) {
+				openArticle(file)
+			}
+		} else {
+			die("%s not found\n", config.FilePath)
 		}
 	} else {
 		die("Your $EDITOR value is not set\n")
