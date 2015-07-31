@@ -38,6 +38,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 * The go-getopt library located under thirdparty/getopt/.
   Copyright (c) Yasuhiro Matsumoto.
+* The html2text library located under thirdparty/html2text/.
+  Copyright (c) 2015 Jay Taylor.
 
 ```
 Permission is hereby granted, free of charge, to any person obtaining a copy
