@@ -49,7 +49,7 @@ func initSQL() {
 	cursor.Exec(query)
 }
 
-func insertSQL(site string, title string, link string, date time.Time, read bool) {
+func insertSQL(site, title, link string, date time.Time, read bool) {
 	query := "INSERT INTO feed (site, title, link, date, read) " +
 		"VALUES ($site, $title, $link, $date, $read);"
 
@@ -71,7 +71,7 @@ func convertHtmlToText(html string) string {
 	return text
 }
 
-func writeToFile(filename string, content string) {
+func writeToFile(filename, content string) {
 	convertedText := convertHtmlToText(content)
 	file, err := os.Create(filename)
 	checkErr(err)
