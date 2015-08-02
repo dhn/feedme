@@ -64,7 +64,7 @@ func insertSQL(site, title, link string, date time.Time, read bool) {
 	cursor.Exec(query, sql)
 }
 
-func convertHtmlToText(html string) string {
+func convertHTMLToText(html string) string {
 	text, err := html2text.FromString(html)
 	checkErr(err)
 
@@ -72,7 +72,7 @@ func convertHtmlToText(html string) string {
 }
 
 func writeToFile(filename, content string) {
-	convertedText := convertHtmlToText(content)
+	convertedText := convertHTMLToText(content)
 	file, err := os.Create(filename)
 	checkErr(err)
 
