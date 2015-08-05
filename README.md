@@ -24,6 +24,7 @@ Fetch content from RSS feed and store site, title, link and date (publish date) 
 Show the last (default 10) new RSS feeds.
 
 - ```-l```:  Show n new RSS feeds (default 10).
+- ```-a```:  Show all RSS feeds (default only unreaded).
 
 ```
 $ fscan -l 5
