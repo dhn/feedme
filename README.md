@@ -27,7 +27,7 @@ Show the last (default 10) new RSS feeds.
 - ```-a```:  Show all RSS feeds (default only unreaded).
 
 ```
-$ fscan -l 5
+$ fscan -l 5 -a
   21* 2015-06-24 23:22:20  miau's blog            Tell github to use another ssh key
   22  2015-06-23 13:37:25  miau's blog            Rename file with git-mv
   31  2015-06-09 00:00:00  http://marmaro.de/lue  2015-06-09
