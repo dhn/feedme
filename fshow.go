@@ -86,6 +86,15 @@ func getTitle(id int) string {
 	return row["title"].(string)
 }
 
+func setArticleAsRead(title string) {
+	query := "UPDATE feed SET read = 1 WHERE title = $title;"
+	sql := sqlite3.NamedArgs{
+		"$title": title,
+	}
+
+	cursor.Exec(query, sql)
+}
+
 func hash(str string) string {
 	hash := sha1.New()
 	hash.Write([]byte(str))
@@ -136,6 +145,7 @@ func main() {
 
 			if checkFileExist(file) {
 				openArticle(file)
+				setArticleAsRead(article)
 			}
 		} else {
 			die("%s not found\n", config.FilePath)
