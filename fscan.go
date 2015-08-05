@@ -16,6 +16,7 @@ import (
 // A Args set getopt arguments
 type Args struct {
 	limit int
+	all   bool
 }
 
 var cursor *sqlite3.Conn
@@ -36,8 +37,23 @@ func initSQL() {
 	}
 }
 
-func showSQL(limit int) {
-	query := "SELECT * from feed ORDER BY date DESC LIMIT $limit;"
+func setSQLQuery(all bool) string {
+	var query string
+
+	if all {
+		query = "SELECT * from feed ORDER BY date " +
+			"DESC LIMIT $limit;"
+	} else {
+		query = "SELECT * from feed WHERE read = 0 " +
+			"ORDER BY date DESC LIMIT $limit;"
+	}
+
+	return query
+}
+
+func showSQL(limit int, all bool) {
+	var query = setSQLQuery(all)
+
 	sql := sqlite3.NamedArgs{"$limit": limit}
 	row := make(sqlite3.RowMap)
 
@@ -65,19 +81,22 @@ func showSQL(limit int) {
 func usage() {
 	fmt.Println("usage: fscan [options]")
 	fmt.Println("   -l,  Show n new RSS feeds (default 10).")
+	fmt.Println("   -a,  Show all RSS feeds (default only unreaded).")
 	fmt.Println("   -h,  Show this help and exit.")
 }
 
 func main() {
-	args := Args{10}
+	args := Args{10, false}
 	var c int
 
 	getopt.OptErr = 0
 	for {
-		if c = getopt.Getopt("l:h"); c == getopt.EOF {
+		if c = getopt.Getopt("l:ah"); c == getopt.EOF {
 			break
 		}
 		switch c {
+		case 'a':
+			args.all = true
 		case 'l':
 			args.limit, _ = strconv.Atoi(getopt.OptArg)
 		case 'h':
@@ -87,7 +106,7 @@ func main() {
 	}
 
 	initSQL()
-	showSQL(args.limit)
+	showSQL(args.limit, args.all)
 }
 
 /* vim: set noet sw=4 sts=4: */
